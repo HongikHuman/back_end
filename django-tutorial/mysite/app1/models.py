@@ -5,6 +5,15 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
+# 기본 모델
+class Base(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True) # 최초 작성 시간
+    updated_at = models.DateTimeField(auto_now=True) # 최초 수정 시간
+
+    class Meta:
+        abstract = True
+
+
 # 유저 모델
 class User(AbstractUser):
     name = models.CharField(max_length=10) # 실명
@@ -51,3 +60,29 @@ class Restaurant(models.Model):
 class Wish(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # 유저
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE) # 찜한 레스토랑
+
+
+# 리뷰 모델(해당 맛집 - 리뷰)
+class Review(Base):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE) # 리뷰 식당
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # 리뷰 작성자
+    views = models.PositiveIntegerField(default=0) # 조회수
+    title = models.CharField(max_length=10) # 글 제목
+    contents = models.TextField()  # 글 내용
+    authenticated = models.BooleanField(default=False)  # 인증 뱃지
+    likes = models.IntegerField(default=0) # 좋아요 수
+
+    def __str__(self):
+        return self.title # 리뷰 제목을 대표로 함
+
+    @property
+    def update_counter(self): # 조회수 증가 생성 함수
+        self.views = self.views + 1
+        self.save()
+
+
+# Review의 사진 모델
+#class Photo(models.Model):
+#    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+#    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+#    image = models.ImageField(upload_to='images/', blank=True, null=True, max=8)
