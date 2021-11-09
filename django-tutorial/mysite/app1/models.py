@@ -23,8 +23,31 @@ class School(models.Model):
     location = models.CharField(max_length=100) # 주소
     loc_x = models.FloatField() # api x 좌표
     loc_y = models.FloatField() # api y 좌표
-    # restaurants = models.ManyToManyField('Restaurant', related_name='nearby_schools', blank=True, null=True) # 식당모델과 1대1 연결
+    restaurants = models.ManyToManyField('Restaurant', related_name='nearby_schools') # 식당모델과 manytomany 연결
 
     def __str__(self):
-        return self.name_k
+        return self.name_k # 학교이름(한글)을 대표값으로
 
+
+# 식당 모델
+class Restaurant(models.Model):
+    name = models.CharField(max_length=30) # 식당이름
+    controlNum = models.CharField(max_length=50) # 식당 관리번호
+    category = models.CharField(max_length=10, blank=True, null=True) # 식당 카테고리
+    likeCount = models.IntegerField(default=0) # 맛집이에요 수
+    address1 = models.CharField(max_length=200, blank=True, null=True) # 주소1
+    address2 = models.CharField(max_length=200, blank=True, null=True) # 주소2
+    loc_x = models.FloatField() # x좌표
+    loc_y = models.FloatField() # y좌표
+
+    class Meta:
+        ordering = ('-likeCount',) # 좋아요 역순으로 정렬
+
+    def __str__(self):
+        return self.name # 식당 이름을 대표값으로
+
+
+# 찜 모델
+class Wish(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # 유저
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE) # 찜한 레스토랑
