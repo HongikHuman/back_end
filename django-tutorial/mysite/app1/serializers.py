@@ -1,7 +1,8 @@
-from .models import User, School
+from .models import User, School, Restaurant, Wish
 from rest_framework import serializers
 
 from django.contrib.auth import authenticate, login
+
 
 # 유저 생성 serializer
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -32,3 +33,13 @@ class UserLoginSerializer(serializers.Serializer):
         if user and user.is_active:
             return user
         raise serializers.ValidationError("오류입니다.")
+
+
+# 음식점(전체정보) serializer
+class RestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
+
+# 대학맛집 -> 특정학교 serializer
