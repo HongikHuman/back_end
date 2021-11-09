@@ -43,3 +43,13 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 # 대학맛집 -> 특정학교 serializer
+
+
+# 찜한 맛집 serializer
+class WishSerializer(serializers.ModelSerializer):
+
+    restaurant = RestaurantSerializer(read_only=True)
+
+    class Meta:
+        model = Wish
+        fields = ['restaurant']
