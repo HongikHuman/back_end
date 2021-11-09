@@ -1,4 +1,4 @@
-from .models import User, School, Restaurant, Wish
+from .models import User, School, Restaurant, Wish, Review
 from rest_framework import serializers
 
 from django.contrib.auth import authenticate, login
@@ -47,9 +47,25 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 # 찜한 맛집 serializer
 class WishSerializer(serializers.ModelSerializer):
-
     restaurant = RestaurantSerializer(read_only=True)
 
     class Meta:
         model = Wish
         fields = ['restaurant']
+
+
+# 리뷰 serializer
+class ReviewListSerializer(serializers.ModelSerializer):
+    restaurant = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Review
+        fields = ['restaurant', 'user', 'views', 'title', 'contents',
+                    'authenticated', 'likes']
+
+    def get_restaurant(self, obj):
+        return obj.restaurant.name # restaurant는 name 반환
+
+    def get_user(self, obj):
+        return obj.user.username # user는 username 반환
