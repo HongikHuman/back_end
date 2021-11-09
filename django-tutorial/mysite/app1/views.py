@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 
 from .models import User, School, Restaurant
-from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer
+from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer
 
 # Create your views here.
 
@@ -36,10 +36,12 @@ class schoolAPIView(APIView):
         return Response(serializers.data) # 해당 학교맛집을 맛집이에요 역순으로 json데이터 반환
 
 
-# 대학맛집 -> 해당학교 -> 특정식당
-
-
-
-# 대학맛집 -> 해당학교 -> 세부페이지
-#class schooldetailAPIView(APIView):
-#    def get(self, ):
+# 찜한 맛집
+class WishAPIView(APIView):
+    def get(self, request, format=None):
+        if request.user.is_authenticated:
+            user = request.user
+            wishes = user.wish_set.all()
+            print(wishes)
+            serializers = WishSerializer(wishes, many=True)
+            return Response(serializers.data)
