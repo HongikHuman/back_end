@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 
 from .models import User, School, Restaurant
-from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer
+from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer
 
 # Create your views here.
 
@@ -42,6 +42,18 @@ class WishAPIView(APIView):
         if request.user.is_authenticated:
             user = request.user
             wishes = user.wish_set.all()
-            print(wishes)
             serializers = WishSerializer(wishes, many=True)
             return Response(serializers.data)
+
+
+# 작성한 리뷰 전체 보기
+class ReviewListAPIView(APIView):
+    def get(self, request, format=None):
+        if request.user.is_authenticated:
+            user = request.user
+            reviews = user.review_set.all()
+            serializers = ReviewListSerializer(reviews, many=True)
+            return Response(serializers.data)
+
+
+# 리뷰 작성하기

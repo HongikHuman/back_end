@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, School, Restaurant, Wish
+from .models import User, School, Restaurant, Wish, Review
 
 # Register your models here.
 
@@ -23,3 +23,9 @@ class RestaurantAdmin(admin.ModelAdmin):
 @admin.register(Wish)
 class WishAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'restaurant']
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['restaurant', 'user', 'views', 'title', 'contents',
+                    'authenticated', 'likes']
