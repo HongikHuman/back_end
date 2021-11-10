@@ -10,4 +10,5 @@ urlpatterns = [
     path('my/wishes/', views.WishAPIView.as_view()),
 
     path('my/review/', views.ReviewListAPIView.as_view()),
+    path('review/<int:id>/', views.ReviewCreateAPIView.as_view()),
 ]
