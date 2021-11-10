@@ -69,3 +69,29 @@ class ReviewListSerializer(serializers.ModelSerializer):
 
     def get_user(self, obj):
         return obj.user.username # user는 username 반환
+
+
+# 리뷰 create serializer
+class ReviewCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        fields = ['restaurant', 'user', 'title', 'contents']
+
+    def create(self, validated_data):
+        restaurant = Restaurant.objects.get(id=self.initial_data['restaurant'])
+        #print(restaurant, type(restaurant))
+        user = User.objects.get(id=self.initial_data['user'])
+        #print(user, type(user))
+
+        # 인증 회원이 작성한 리뷰일시 -> authenticated = True로 바꾸기
+        school_ename = user.school.name_k
+        auth = 0
+        if restaurant.nearby_schools.get(name_k=school_ename):
+            auth = 1
+        review = Review.objects.create(restaurant = restaurant,
+                        user = user,
+                        title = validated_data['title'],
+                        contents = validated_data['contents'],
+                        authenticated = auth)
+        return review
