@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 
 from .models import User, School, Restaurant
-from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer
+from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer, ReviewCreateSerializer
 
 # Create your views here.
 
@@ -57,3 +57,10 @@ class ReviewListAPIView(APIView):
 
 
 # 리뷰 작성하기
+class ReviewCreateAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = ReviewCreateSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save() # db에 저장
+            print("저장 완료")
+            return Response(serializer.data, status=201)
