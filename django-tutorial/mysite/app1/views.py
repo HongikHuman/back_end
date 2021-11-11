@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 
-from .models import User, School, Restaurant
+from .models import User, School, Restaurant, Review
 from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer, ReviewCreateSerializer
+from .serializers import ReviewUpdateSerializer
 
 # Create your views here.
 
@@ -56,11 +57,35 @@ class ReviewListAPIView(APIView):
             return Response(serializers.data)
 
 
-# 리뷰 작성하기
-class ReviewCreateAPIView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = ReviewCreateSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save() # db에 저장
-            print("저장 완료")
-            return Response(serializer.data, status=201)
+# # 리뷰 작성하기
+# class ReviewCreateAPIView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = ReviewCreateSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save() # db에 저장
+#             print("저장 완료")
+#             return Response(serializer.data, status=201)
+#
+#
+# # 리뷰하나 가져오기 & 수정하기 & 삭제하기
+# class ReviewUpdateAPIView(APIView):
+#     def get_object(self, pk):
+#         return get_object_or_404(Review, id=pk)
+#
+#     def get(self, request, pk, format=None):
+#         review = self.get_object(pk)
+#         serializer = ReviewListSerializer(review)
+#         return Response(serializer.data)
+#
+#     def put(self, request, pk):
+#         review = self.get_object(pk)
+#         serializer = ReviewUpdateSerializer(review, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=201)
+#         return Response(serializer.errors, status=400)
+#
+#     def delete(self, request, pk):
+#         review = self.get_object(pk)
+#         review.delete()
+#         return Response(status=201)
