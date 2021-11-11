@@ -95,3 +95,10 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
                         contents = validated_data['contents'],
                         authenticated = auth)
         return review
+
+
+# 리뷰 update serializer
+class ReviewUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['title', 'contents']
