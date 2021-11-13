@@ -11,7 +11,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name_k', 'name_e', 'location', 'loc_x', 'loc_y']
+    list_display = ['id', 'name_k', 'location', 'loc_x', 'loc_y']
 
 
 @admin.register(Restaurant)
