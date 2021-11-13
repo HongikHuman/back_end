@@ -40,11 +40,10 @@ class School(models.Model):
 
 # 식당 모델
 class Restaurant(models.Model):
-    name = models.CharField(max_length=30) # 식당이름(사업장명)
-    controlNum = models.CharField(max_length=50, blank=True, null=True) # 식당 관리번호
-    category = models.CharField(max_length=10, blank=True, null=True) # 식당 카테고리 (업태구분명)
     address1 = models.CharField(max_length=200, blank=True, null=True) # 주소1 (지번주소)
     address2 = models.CharField(max_length=200, blank=True, null=True) # 주소2 (도로명주소)
+    name = models.CharField(max_length=30)  # 식당이름(사업장명)
+    category = models.CharField(max_length=10, blank=True, null=True) # 식당 카테고리 (업태구분명)
     loc_x = models.FloatField() # x좌표(경도)
     loc_y = models.FloatField() # y좌표(위도)
     likeCount = models.IntegerField(default=0)  # 맛집이에요 수
