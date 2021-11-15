@@ -90,3 +90,49 @@ class ReviewListAPIView(APIView):
 #         review.delete()
 #         return Response(status=201)
 
+# 대학맛집 (대학 입력시 대학 정보 get 해주기)
+class SchoolAPIVview(APIView):
+    def get(self, request, format=None):
+        school = request.data
+        serializers = SelectSerializer(school)
+        return Response(serializers.data)
+
+
+#히스토리 Base 상속 수정해야함
+class HistoryAPIView(APIView):
+    def get(self, request, format=None):
+        if request.user.is_authenticated:
+            user = request.user
+            #유저가 접속한 url restuarant/pk/ timestamp 찍힘 클릭시 history 모델에 post 돼야함
+            #user.timestamp / 접속한 음식저 pk post
+            historyList = History.objects.filter(user=user).order_by('-timestamp')
+            serializers = HistoryListSerializer(historyList, many=True)
+            return Response(serializers.data)
+
+# 맛집랭킹
+class RankingAPIView(APIView):
+
+    def get(self, request, format=None):
+        restuarants = Restaurant.objects.all().order_by('-likeCount')
+        serializers = RestaurantSerializer(restuarants)
+        return Response(serializers.data)
+
+# 핫게시판
+class HotReviewAPIView(APIView):
+
+    def get(self, request, format=None):
+        resviews = Review.objects.all().order_by('-agree')
+        serializers = ReviewListSerializer(resviews)
+        return Response(serializers.data)
+
+#세부페이지
+class RestuarantAPIView(APIView):
+
+    def get_object(self, pk):
+        restuarant = get_object_or_404(Restaurant, pk=pk)
+        return restuarant
+
+    def get(self, request, pk, format=None):
+        restuarant = self.get_object(pk)
+        serializer = RestaurantShowSerializer(restuarant)
+        return Response(serializer.data)
