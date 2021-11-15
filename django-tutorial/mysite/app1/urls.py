@@ -12,4 +12,10 @@ urlpatterns = [
     path('my/review/', views.ReviewListAPIView.as_view()),
     #path('review/create/<int:id>/', views.ReviewCreateAPIView.as_view()),
     #path('review/detail/<int:id>/', views.ReviewUpdateAPIView.as_view()),
+    
+    path('places/<int:id>/', views.RestuarantAPIView.as_view()),
+    path('places/rank/', views.RankingAPIView.as_view()),
+    path('history/', views.HistoryAPIView.as_view()),
+    path('univ/', views.SchoolAPIVview.as_view()),
+
 ]
