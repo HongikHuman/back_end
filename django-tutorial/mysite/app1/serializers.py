@@ -102,3 +102,74 @@ class ReviewUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['title', 'contents']
+        
+
+# 대학맛집 -> 특정학교 serializer
+class SelectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = ['__all__']
+
+# 맛집 정보 serializer
+class RestaurantInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
+# 리뷰수 serializer
+class ReviewCntSerializer(serializers.ModelSerializer):
+    reviewCnt = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Review
+        fields = ['restaurant']
+
+    def get_reviewCnt(self, obj):
+        reviews = Review.objects.filter(restaurant=obj.restuarant)
+        cnt = reviews.count()
+        return cnt
+
+# Likesornot serializer
+class LikesOrnotSerializer(serializers.ModelSerializer):
+    Ornot = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Res_like
+        fields = '__all__'
+
+    def get_Ornot(self, obj):
+        if Res_like.objects.filter(user=obj.user)&Res_like.objects.filter(restuarant=obj.restuarant).exists():
+            return True
+        else:
+            return False
+
+# Wishornot serializer
+class WishOrnotSerializer(serializers.ModelSerializer):
+    Ornot = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Wish
+        fields = '__all__'
+
+    def get_Ornot(self, obj):
+        if Wish.objects.filter(user=obj.user)&Wish.objects.filter(restuarant=obj.restuarant).exists():
+            return True
+        else:
+            return False
+
+ # 히스토리 serializer
+class HistoryListSerializer(serializers.ModelSerializer):
+    #historyList = serializers.SerializerMethodField()
+
+    class Meta:
+        model = History
+        fields = '__all__'
+
+
+class RestaurantShowSerializer(serializers.ModelSerializer):
+    reviewList = ReviewListSerializer(read_only=True)
+    getinfo = RestaurantInfoSerializer(read_only=True)
+    reviewCnt = ReviewCntSerializer(read_only=True)
+    wishOrnot = WishOrnotSerializer(read_only=True)
+    likeOrnot = LikesOrnotSerializer(read_only=True)
