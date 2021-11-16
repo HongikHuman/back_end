@@ -10,6 +10,6 @@ urlpatterns = [
     path('my/wishes/', views.WishAPIView.as_view()),
 
     path('my/review/', views.ReviewListAPIView.as_view()),
-    #path('review/create/<int:id>/', views.ReviewCreateAPIView.as_view()),
-    #path('review/detail/<int:id>/', views.ReviewUpdateAPIView.as_view()),
+    path('review/write/<int:pk>/', views.ReviewCreateAPIView.as_view()), #인자는 식당id값
+    path('review/<int:pk>/', views.ReviewDetailAPIView.as_view()), # 인자는 리뷰id값
 ]
