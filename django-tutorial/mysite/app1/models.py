@@ -55,10 +55,19 @@ class Restaurant(models.Model):
         return self.name # 식당 이름을 대표값으로
 
 
+# 학교-식당 중개 모델
+class Relationship(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE, blank=True, null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        ordering = ('school_id',) # school_id 값으로 오름차순 정렬
+
+
 # 식당 - 맛집이에요
 class Res_like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE, blank=True, null=True)
 
 
 # 찜 모델

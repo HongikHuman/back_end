@@ -1,8 +1,7 @@
-from .models import User, School, Restaurant, Wish, Review
+from .models import User, School, Restaurant, Wish, Review, Relationship
 from rest_framework import serializers
 
 from django.contrib.auth import authenticate, login
-
 
 
 # 유저 생성 serializer
@@ -44,6 +43,12 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 # 대학맛집 -> 특정학교 serializer
+class RelationshipSerializer(serializers.ModelSerializer):
+    restaurant = RestaurantSerializer()
+
+    class Meta:
+        model = Relationship
+        fields = ['restaurant']
 
 
 # 찜한 맛집 serializer

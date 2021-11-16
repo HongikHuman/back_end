@@ -5,9 +5,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 
-from .models import User, School, Restaurant, Review
+from .models import User, School, Restaurant, Review, Relationship
 from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer, ReviewCreateSerializer
-from .serializers import ReviewUpdateSerializer
+from .serializers import ReviewUpdateSerializer, RelationshipSerializer
 
 # Create your views here.
 
@@ -31,9 +31,10 @@ class loginAPIView(APIView):
 # 대학맛집 -> 해당학교
 class schoolAPIView(APIView):
     def get(self, request, pk, format=None): # pk: name_k(학교 영문 이름)
-        school = School.objects.get(name_e=pk)
-        restaurants = Restaurant.objects.filter(nearby_schools=school)
-        serializers = RestaurantSerializer(restaurants, many=True) # many=True 없으면 queryset 오류 뜸
+        school = School.objects.get(id=pk)
+        queryset = Relationship.objects.filter(school=school)
+        print(queryset)
+        serializers = RelationshipSerializer(queryset, many=True) # many=True 없으면 queryset 오류 뜸
         return Response(serializers.data) # 해당 학교맛집을 맛집이에요 역순으로 json데이터 반환
 
 
