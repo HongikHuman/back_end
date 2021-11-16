@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate, login
 
 
+
 # 유저 생성 serializer
 class UserCreateSerializer(serializers.ModelSerializer):
     school = serializers.CharField()
