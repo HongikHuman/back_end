@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 
 from .models import User, School, Restaurant, Review, Relationship
 from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer, ReviewCreateSerializer
-from .serializers import ReviewUpdateSerializer, RelationshipSerializer
+from .serializers import ReviewUpdateSerializer, RelationshipSerializer, SelectSerializer, RestaurantInfoSerializer, ReviewCntSerializer, LikesOrnotSerializer, WishOrnotSerializer, HistoryListSerializer, RestaurantShowSerializer
 
 # Create your views here.
 
@@ -98,3 +98,48 @@ class ReviewDetailAPIView(APIView):
                 return Response({"리뷰 작성자가 아닙니다."}, status=404)
             review.delete()
             return Response(status=201)
+
+# 대학맛집 (대학 입력시 대학 정보 get 해주기)
+class SchoolAPIVview(APIView):
+    def get(self, request, format=None):
+        school = request.data
+        serializers = SelectSerializer(school)
+        return Response(serializers.data)
+
+
+#히스토리 Base 상속 수정해야함
+class HistoryAPIView(APIView):
+    def get(self, request, format=None):
+        if request.user.is_authenticated:
+            user = request.user
+            historyList = History.objects.filter(user=user).order_by('-created_at')
+            serializers = HistoryListSerializer(historyList, many=True)
+            return Response(serializers.data)
+
+# 맛집랭킹
+class RankingAPIView(APIView):
+
+    def get(self, request, format=None):
+        restuarants = Restaurant.objects.all().order_by('-likeCount')
+        serializers = RestaurantSerializer(restuarants)
+        return Response(serializers.data)
+
+# 핫게시판
+#class HotReviewAPIView(APIView):
+
+#    def get(self, request, format=None):
+#        resviews = Review.objects.all().order_by('-agree')
+#        serializers = ReviewListSerializer(resviews)
+#        return Response(serializers.data)
+
+#세부페이지
+class RestuarantAPIView(APIView):
+
+    def get_object(self, pk):
+        restuarant = get_object_or_404(Restaurant, pk=pk)
+        return restuarant
+
+    def get(self, request, pk, format=None):
+        restuarant = self.get_object(pk)
+        serializer = RestaurantShowSerializer(restuarant)
+        return Response(serializer.data)
