@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "front1",
+      "password": "1234",
+      "name": "프론트",
+      "phone": "01012345678",
+      "nickname": "frontend",
+      "university": "홍익대학교"
+    },
+    {
+      "id": "back1",
+      "password": "1234",
+      "name": "백엔드",
+      "phone": "01033392223",
+      "nickname": "backend",
+      "university": "홍익대학교"
+    },
+    {
+      "id": "gengminy",
+      "password": "1234",
+      "name": "갱미니",
+      "phone": "01098765432",
+      "nickname": "geng",
+      "university": "홍익대학교"
+    }
+  ]
+}
