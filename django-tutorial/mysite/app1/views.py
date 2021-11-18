@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 
-from .models import User, School, Restaurant, Review, Relationship
+from .models import User, School, Restaurant, Review, Relationship, History
 from .serializers import UserCreateSerializer, UserLoginSerializer, RestaurantSerializer, WishSerializer, ReviewListSerializer, ReviewCreateSerializer
 from .serializers import ReviewUpdateSerializer, RelationshipSerializer, SelectSerializer, RestaurantInfoSerializer, ReviewCntSerializer, LikesOrnotSerializer, WishOrnotSerializer, HistoryListSerializer, RestaurantShowSerializer
 
@@ -32,6 +32,7 @@ class loginAPIView(APIView):
 class schoolAPIView(APIView):
     def get(self, request, pk, format=None): # pk: name_k(학교 영문 이름)
         school = School.objects.get(id=pk)
+        print(school)
         queryset = Relationship.objects.filter(school=school)
         print(queryset)
         serializers = RelationshipSerializer(queryset, many=True) # many=True 없으면 queryset 오류 뜸

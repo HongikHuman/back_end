@@ -46,12 +46,13 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware', # 추가
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,8 +64,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'http://172.23.240.1:3000',
-    'http://localhost:3000',
-    'http://localhost:8000',
+    "http://localhost:3000",
+    "http://127.0.0.1:8000",
 )
 
 ROOT_URLCONF = 'mysite.urls'
@@ -73,7 +74,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'frontend', 'build'),
+            os.path.join(BASE_DIR, 'project-front-end', 'build'), # 경로변경
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -89,8 +90,10 @@ TEMPLATES = [
 
 # 추가
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static')
+    os.path.join(BASE_DIR, 'project-front-end', 'build', 'static'),
 ]
+
+
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
@@ -154,3 +157,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'app1.User'
 
+REACT_ROUTES = [
+    'univ',
+    'places',
+]
