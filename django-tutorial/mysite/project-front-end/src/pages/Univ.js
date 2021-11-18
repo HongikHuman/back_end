@@ -53,7 +53,7 @@ export default function Univ(){
 
 
     const fetchData = async ()=>{
-        await axios.get('http://localhost:3000/sheet1')
+        await axios.get(`http://127.0.0.1:8000/app/univ/${univIndex}`)
         .then((res)=>{
             setMaxPage(Math.floor((res.data.length -1) / viewNum) + 1);
             setDb(res.data);

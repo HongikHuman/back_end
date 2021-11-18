@@ -160,4 +160,16 @@ AUTH_USER_MODEL = 'app1.User'
 REACT_ROUTES = [
     'univ',
     'places',
+    'places/write',
+    'places/rank',
+    'hotpost',
+    'time-search/list'
+    'likes',
+    'register',
+    'my/history',
+    'my/likes',
+    'my/reply',
+    'my/post',
+    'my/edit',
+    'logout',
 ]
